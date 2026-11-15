@@ -8,7 +8,10 @@ import com.sky.result.Result;
 import com.sky.service.EmployeeService;
 import com.sky.utils.JwtUtil;
 import com.sky.vo.EmployeeLoginVO;
+
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,12 +21,18 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.aliyuncs.ecs.model.v20140526.AttachKeyPairResponse;
+import com.sky.dto.EmployeeDTO;
+
+import io.swagger.v3.oas.annotations.Operation;
+
 /**
  * 员工管理
  */
 @RestController
 @RequestMapping("/admin/employee")
 @Slf4j
+@Tag(name="员工相关接口")
 public class EmployeeController {
 
     @Autowired
@@ -70,5 +79,11 @@ public class EmployeeController {
     public Result<String> logout() {
         return Result.success();
     }
-
+    @PostMapping
+    @Operation(summary="新增员工")
+    public Result save(@RequestBody EmployeeDTO employeeDTO){
+        log.info("新增员工：{}",employeeDTO);
+        employeeService.save(employeeDTO);
+        return Result.success();
+    }
 }
