@@ -97,18 +97,31 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
         registry.addResourceHandler("/doc.html").addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
-
+    /* 
     @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
         //创建消息转换器对象
         log.info("扩展消息转换器");
-        new MappingJackson2HttpMessageConverter converter=new MappingJackson2HttpMessageConverter();
+        MappingJackson2HttpMessageConverter converter=new MappingJackson2HttpMessageConverter();
         //需要为消息转换器设置对象快照，可以将java对象转化为json对象
         converter.setObjectMapper(new JacksonObjectMapper());
         //将自己的消息转换器加入容器
         converters.add(0,converter);
     }
+    */
 
-    
+     
+    @Override
+    public void extendMessageConverters(
+        List<HttpMessageConverter<?>> converters) {
+
+        log.info("扩展消息转换器");
+
+        for (HttpMessageConverter<?> converter : converters) {
+            if (converter instanceof MappingJackson2HttpMessageConverter jacksonConverter) {
+                jacksonConverter.setObjectMapper(new JacksonObjectMapper());
+            }
+        }
+    }
     
 }

@@ -25,6 +25,8 @@ public interface EmployeeMapper {
     "(#{name},#{username},#{password},#{phone},#{sex},#{idNumber},#{createTime},#{updateTime},#{createUser},#{updateUser},#{status})")
     void insert(Employee employee);
 
-
     Page<Employee> pageQuery(EmployeePageQueryDTO emplotPageQueryDTO);
+
+    //根据主键动态修改属性
+    void update(Employee employee);
 }

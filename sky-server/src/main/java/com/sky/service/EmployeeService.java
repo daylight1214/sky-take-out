@@ -25,4 +25,6 @@ public interface EmployeeService {
      * @return
      */
     PageResult pageQuery(EmployeePageQueryDTO emplotPageQueryDTO);
+
+    void startOrStop(Integer status,Long id);
 }
