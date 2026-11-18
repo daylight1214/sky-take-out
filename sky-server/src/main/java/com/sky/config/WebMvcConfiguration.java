@@ -1,6 +1,9 @@
 package com.sky.config;
 
+import java.util.List;
+
 import com.sky.interceptor.JwtTokenAdminInterceptor;
+import com.sky.json.JacksonObjectMapper;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -13,6 +16,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springdoc.core.models.GroupedOpenApi;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 
 
 
@@ -92,4 +97,18 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
         registry.addResourceHandler("/doc.html").addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
+
+    @Override
+    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+        //创建消息转换器对象
+        log.info("扩展消息转换器");
+        new MappingJackson2HttpMessageConverter converter=new MappingJackson2HttpMessageConverter();
+        //需要为消息转换器设置对象快照，可以将java对象转化为json对象
+        converter.setObjectMapper(new JacksonObjectMapper());
+        //将自己的消息转换器加入容器
+        converters.add(0,converter);
+    }
+
+    
+    
 }

@@ -23,9 +23,11 @@ import java.util.Map;
 
 import com.aliyuncs.ecs.model.v20140526.AttachKeyPairResponse;
 import com.sky.dto.EmployeeDTO;
-
+// 检查EmployeeController里的import
+import com.sky.dto.EmployeePageQueryDTO;
 import io.swagger.v3.oas.annotations.Operation;
-
+import com.sky.result.PageResult;
+import org.springframework.web.bind.annotation.GetMapping;
 /**
  * 员工管理
  */
@@ -85,5 +87,13 @@ public class EmployeeController {
         log.info("新增员工：{}",employeeDTO);
         employeeService.save(employeeDTO);
         return Result.success();
+    }
+
+    @GetMapping("/page")
+    @Operation(summary="员工分页查询")
+    public Result<PageResult> page(EmployeePageQueryDTO employeePageQueryDTO){
+        log.info("员工分页查询，参数为{}",employeePageQueryDTO);
+        PageResult pageResult=employeeService.pageQuery(employeePageQueryDTO);
+        return Result.success(pageResult);
     }
 }
