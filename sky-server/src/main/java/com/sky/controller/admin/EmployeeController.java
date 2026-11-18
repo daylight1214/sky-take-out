@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.service.annotation.PatchExchange;
 
 import java.util.HashMap;
@@ -105,5 +106,21 @@ public class EmployeeController {
         log.info("启用禁用员工账号:{},{}",status,id);
         employeeService.startOrStop(status,id);
         return  Result.success();
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary="根据id查询员工信息")
+
+    public Result<Employee> getById(@PathVariable Long id){
+        Employee employee =employeeService.getById(id);
+        return Result.success(employee);
+    }
+
+    @PutMapping
+    @Operation(summary="编辑员工信息")
+    public Result update(@RequestBody EmployeeDTO employeeDTO){
+        log.info("编辑员工信息：{}",employeeDTO);
+        employeeService.update(employeeDTO);
+        return Result.success();
     }
 }
